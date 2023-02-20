@@ -2,8 +2,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-df_mentors=pd.read_pickle("../data/224k_processed_metadata_old.pkl")
-df_skills=df_mentors[['skills']].copy()
+df_skills = pd.read_csv('skills.csv')
 unique_skills_dict = dict()
 removed_keys = pd.Series()
 
