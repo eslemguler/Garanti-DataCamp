@@ -23,7 +23,7 @@ categorical_features = ["industry", "location"]
 categorical_transformer = Pipeline(steps=[("imputer", SimpleImputer(strategy="most_frequent")), ("onehot", OneHotEncoder(handle_unknown="ignore"))])
 
 skill_features = list(X.columns[11:])
-skill_transformer = Pipeline(steps=[("imputer", SimpleImputer(strategy="most_frequent"))])
+skill_transformer = Pipeline(steps=[("imputer", SimpleImputer(strategy="median"))])
 
 # Combine the preprocessing steps using ColumnTransformer
 preprocessor = ColumnTransformer(
@@ -42,8 +42,8 @@ pipeline = Pipeline(steps=[("preprocessor", preprocessor), ("classifier", clf)])
 
 # Define the hyperparameters to tune using grid search
 param_grid = {
-    "classifier__n_estimators": [100, 200],
-    "classifier__max_depth": [None, 10, 20]
+    "classifier__n_estimators": [100, 200, 500],
+    "classifier__max_depth": [None, 10, 20, 15]
 }
 
 # Use grid search to find the best hyperparameters
@@ -54,5 +54,5 @@ grid_search.fit(X, y)
 y_pred = grid_search.predict(test_data)
 
 # Create a submission file
-submission_df = pd.DataFrame({'user_id': test_data['user_id'], 'churn': y_pred})
-submission_df.to_csv('submission.csv', index=False)
+submission_df = pd.DataFrame({'user_id': test_data['user_id'], 'moved_after_2019': y_pred})
+submission_df.to_csv('submission_rf.csv', index=False)
