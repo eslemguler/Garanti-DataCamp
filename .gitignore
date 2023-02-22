@@ -1,8 +1,2 @@
-variables.py
-education.csv
-languages.csv
-skills.csv
-submission.csv
-test_users.csv
-train_users.csv
-work_experiences.csv
+input_data
+output_data
