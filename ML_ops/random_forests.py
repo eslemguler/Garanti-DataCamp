@@ -6,10 +6,11 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.linear_model import LogisticRegression
 
 # Load the data
-train_data = pd.read_csv("merged_data_train.csv")
-test_data = pd.read_csv("merged_data_test.csv")
+train_data = pd.read_csv("train_merged_w_study.csv")
+test_data = pd.read_csv("test_merged_w_study.csv")
 
 # Split into features and target
 X = train_data.drop('moved_after_2019', axis=1)
@@ -35,19 +36,29 @@ preprocessor = ColumnTransformer(
 )
 
 # Define the classifier to use
-clf = RandomForestClassifier()
+# clf = RandomForestClassifier()
+clf = LogisticRegression()
 
 # Combine the preprocessor and classifier in a pipeline
 pipeline = Pipeline(steps=[("preprocessor", preprocessor), ("classifier", clf)])
 
 # Define the hyperparameters to tune using grid search
-param_grid = {
-    "classifier__n_estimators": [100, 200, 500],
-    "classifier__max_depth": [None, 10, 20, 15]
-}
+# ---- parameters for random forest:
+# param_grid = {
+#     "classifier__n_estimators": [100, 200, 500],
+#     "classifier__max_depth": [None, 10, 20, 15],
+#     # "classifier__max_features": ['auto', 'sqrt'],
+# }
+
+# ---- parameters for logistic regression:
+
 
 # Use grid search to find the best hyperparameters
-grid_search = GridSearchCV(pipeline, param_grid, cv=5)
+# line below belongs to random forest:
+# grid_search = GridSearchCV(pipeline, param_grid, cv=8) 
+
+# for logistic regression:
+grid_search = GridSearchCV(pipeline, cv=8) 
 grid_search.fit(X, y)
 
 # Make predictions on the test data
