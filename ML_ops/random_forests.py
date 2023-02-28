@@ -51,14 +51,16 @@ pipeline = Pipeline(steps=[("preprocessor", preprocessor), ("classifier", clf)])
 # }
 
 # ---- parameters for logistic regression:
-
+param_grid = {
+    "classifier__n_estimators": [100, 200, 500],
+    "classifier__max_depth": [None, 10, 20, 15],
+    # "classifier__max_features": ['auto', 'sqrt'],
+}
 
 # Use grid search to find the best hyperparameters
 # line below belongs to random forest:
-# grid_search = GridSearchCV(pipeline, param_grid, cv=8) 
+grid_search = GridSearchCV(pipeline, param_grid, cv=8) 
 
-# for logistic regression:
-grid_search = GridSearchCV(pipeline, cv=8) 
 grid_search.fit(X, y)
 
 # Make predictions on the test data
